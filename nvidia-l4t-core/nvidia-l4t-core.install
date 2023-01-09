@@ -1,0 +1,133 @@
+pre_install() {
+
+	# Copyright (c) 2020-2021, NVIDIA CORPORATION. All rights reserved.
+	#
+	# Redistribution and use in source and binary forms, with or without
+	# modification, are permitted provided that the following conditions
+	# are met:
+	#  * Redistributions of source code must retain the above copyright
+	#    notice, this list of conditions and the following disclaimer.
+	#  * Redistributions in binary form must reproduce the above copyright
+	#    notice, this list of conditions and the following disclaimer in the
+	#    documentation and/or other materials provided with the distribution.
+	#  * Neither the name of NVIDIA CORPORATION nor the names of its
+	#    contributors may be used to endorse or promote products derived
+	#    from this software without specific prior written permission.
+	#
+	# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS ``AS IS'' AND ANY
+	# EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+	# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+	# PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+	# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+	# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+	# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+	# PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+	# OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+	# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+	# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+	# This script runs on target pre installation of nvidia-core debian package.
+
+	BUILD="t210ref"
+
+	if [ -e "/opt/nvidia/l4t-packages/.nv-l4t-disable-boot-fw-update-in-preinstall" ]; then	
+		echo "Pre-installing... skip compatibility checking."
+	fi
+
+	# Check platform compatibility
+	CHIP="$(tr '\0' ' ' < /proc/device-tree/compatible)"
+	if [[ ${CHIP} =~ "tegra186" ]]; then
+		if [ "${BUILD}" != "t186ref" ]; then
+			echo "The package is incompatible with Tegra SoC in this platform, quit."
+			exit 1
+		fi
+	elif [[ ${CHIP} =~ "tegra210" ]]; then
+		if [ "${BUILD}" != "t210ref" ]; then
+			echo "The package is incompatible with Tegra SoC in this platform, quit."
+			exit 1
+		fi
+	elif [[ ${CHIP} =~ "tegra194" ]]; then
+		if [ "${BUILD}" != "t186ref" ]; then
+			echo "The package is incompatible with Tegra SoC in this platform, quit."
+			exit 1
+		fi
+	else
+		echo "Unknown Tegra platform is detected. Package can't be installed, quit."
+		exit 1
+	fi
+
+	BOOT_CTRL_CONF="/etc/nv_boot_control.conf"
+	NVBOOTCTRL="/usr/bin/nvbootctrl"
+	unified=""
+
+	# Check unified bl&rf a/b, if enabled, print warning message and exit.
+	check_unified_ab()
+	{
+		if [ ! -x "${NVBOOTCTRL}" ]; then
+			return
+		fi
+
+		# Return code of nvbootctrl is-unified-enabled:
+		# 1. For new version nvbootctrl support cmd is-unified-enabled:
+		#    (1) EX_OK(0): Rootfs AB is enabled with unified AB;
+		#    (2) EX_SOFTWARE(70): Rootfs AB is enabled without unified AB;
+		#    (3) EX_UNAVAILABLE(69): Rootfs AB isn't enabled.
+		# 2. For old version nvbootctrl does not support cmd is-unified-enabled:
+		#    EX_USAGE(64): Command line usage error.
+		if  "${NVBOOTCTRL}" is-unified-enabled > /dev/null 2>&1; then
+			unified="enabled";
+		fi
+	}
+
+	chipid=$( awk '/TEGRA_CHIPID/ {print $2}' "${BOOT_CTRL_CONF}" )
+	if [ "${chipid}" = "0x18" ] || [ "${chipid}" = "0x19" ]; then
+		check_unified_ab
+		if [ "${unified}" = "enabled" ]; then
+			echo "WARNING: unified bootloader and rootfs A/B is enabled, Can not update using Debian OTA, quit."
+			exit 1
+		fi
+	fi
+}
+
+pre_upgrade() {
+	pre_install
+}
+
+post_remove() {
+
+	# Copyright (c) 2020, NVIDIA CORPORATION. All rights reserved.
+	#
+	# Redistribution and use in source and binary forms, with or without
+	# modification, are permitted provided that the following conditions are met:
+	#
+	# 1. Redistributions of source code must retain the above copyright notice, this
+	#    list of conditions and the following disclaimer.
+	#
+	# 2. Redistributions in binary form must reproduce the above copyright notice,
+	#    this list of conditions and the following disclaimer in the documentation
+	#    and/or other materials provided with the distribution.
+	#
+	# 3. Neither the name of the copyright holder nor the names of its
+	#    contributors may be used to endorse or promote products derived from
+	#    this software without specific prior written permission.
+	#
+	# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+	# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+	# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+	# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+	# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+	# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+	# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+	# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+	# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+	# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+	# When the current kernel is real-time variant, change the default boot
+	# image to the generic kernel.
+	# shellcheck disable=SC2193
+	if [[ "<VERSION>" == *rt*-tegra ]]; then
+		nv-update-extlinux "generic"
+	fi
+
+}
