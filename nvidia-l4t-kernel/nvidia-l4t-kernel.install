@@ -1,0 +1,233 @@
+post_install() {
+
+	# Copyright (c) 2019-2021, NVIDIA CORPORATION. All rights reserved.
+	#
+	# Redistribution and use in source and binary forms, with or without
+	# modification, are permitted provided that the following conditions
+	# are met:
+	#  * Redistributions of source code must retain the above copyright
+	#    notice, this list of conditions and the following disclaimer.
+	#  * Redistributions in binary form must reproduce the above copyright
+	#    notice, this list of conditions and the following disclaimer in the
+	#    documentation and/or other materials provided with the distribution.
+	#  * Neither the name of NVIDIA CORPORATION nor the names of its
+	#    contributors may be used to endorse or promote products derived
+	#    from this software without specific prior written permission.
+	#
+	# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS ``AS IS'' AND ANY
+	# EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+	# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+	# PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+	# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+	# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+	# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+	# PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+	# OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+	# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+	# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+	# This script runs on target post installation of nvidia-kernel debian package.
+
+	BOOT_CTRL_CONF="/etc/nv_boot_control.conf"
+	OTA_PACKAGE_DIR="/opt/ota_package"
+	T186REF_NVBOOTCTRL="/usr/bin/nvbootctrl"
+	T186REF_UPDATER="/usr/bin/nv_update_engine"
+	T186REF_PAYLOAD_UPDATER="/usr/bin/nv_bootloader_payload_updater"
+	UPDATE_CONF="/opt/nvidia/l4t-bootloader-config/nv-l4t-bootloader-config.sh"
+	kernel_only_payload="kernel_only_payload"
+
+depmod -a "4.9.299-tegra"
+
+if [ -d /etc/kernel/postinst.d ]; then
+        mkdir -p /usr/lib/linux/triggers
+        cat - > "/usr/lib/linux/triggers/4.9.299-tegra" <<EOF
+DEB_MAINT_PARAMS="$*" INITRD=No run-parts --report --exit-on-error --arg="4.9.299-tegra" \
+        --arg=/boot/Image /etc/kernel/postinst.d
+EOF
+ #       dpkg-trigger --no-await "linux-update-4.9.299-tegra"
+fi
+
+	# Update extlinux.conf per kernel variant
+	extlinux_config="generic"
+	# shellcheck disable=SC2193
+	if [[ "4.9.299-tegra" == *rt*-tegra ]]; then
+		extlinux_config="real-time"
+	fi
+	nv-update-extlinux "${extlinux_config}"
+
+	if [ -e "/opt/nvidia/l4t-packages/.nv-l4t-disable-boot-fw-update-in-preinstall" ]; then
+	    echo "Pre-installing kernel package, skip flashing"
+	    exit 0
+	fi
+
+	install_kernel () {
+	    part_name="${1}"
+
+	    "${T186REF_PAYLOAD_UPDATER}" --part "${part_name}" &> \
+	        "${OTA_PACKAGE_DIR}/${part_name}.log"
+	    # shellcheck disable=SC2181
+	    if [ $? -ne 0 ]; then
+	            echo "ERROR. Procedure for ${part_name} update FAILED."
+	            echo "Cannot install package. Exiting..."
+	            exit 1
+	    fi
+	}
+
+	install_kernel_on_rootfs_id () {
+	    local suffix=""
+
+	    if [ -x "${T186REF_PAYLOAD_UPDATER}" ]; then
+	        rootfs_id=$( "${T186REF_NVBOOTCTRL}" -t rootfs get-current-slot )
+	        if [ "${rootfs_id}" = "1" ]; then
+	            suffix="_b"
+	        fi
+
+	        install_kernel "kernel${suffix}"
+	        install_kernel "kernel-dtb${suffix}"
+	    else
+	        echo "ERROR. ${T186REF_PAYLOAD_UPDATER} is NOT executable."
+	        echo "Post install script FAILED."
+	        echo "Cannot install package. Exiting..."
+	        exit 1
+	    fi
+	}
+
+	t186ref_update () {
+	    echo "Starting kernel post-install procedure."
+
+	    if [ -x "${T186REF_NVBOOTCTRL}" ]; then
+	        rootfs_ab=$( "${T186REF_NVBOOTCTRL}" -t rootfs get-number-slots )
+	        if [ "${rootfs_ab}" = "1" ]; then
+	            echo "rootfs AB is not enabled."
+	            # Do nothing.
+	            # Because the kernel and kernel-dtb is installed with
+	            # Bootloader Debian package.
+	        elif [ "${rootfs_ab}" = "2" ]; then
+	            echo "rootfs AB is enabled."
+	            if [ -x "${T186REF_UPDATER}" ]; then
+	                "${T186REF_UPDATER}" --enable-ab > /dev/null
+
+	                if [ -f "${payload_dir}/${kernel_only_payload}" ]; then
+	                    pushd "${payload_dir}" &> /dev/null || exit 1
+
+	                    # The payload updater currently only consumes payloads
+	                    # named "/opt/ota_package/bl_update_payload"
+	                    cp "${kernel_only_payload}" \
+	                        "${OTA_PACKAGE_DIR}"/bl_update_payload
+
+	                    install_kernel_on_rootfs_id
+
+	                    popd &> /dev/null || exit 1
+	                    echo "Update ${kernel_only_payload} completed."
+	                else
+	                    echo "ERROR. ${payload_dir}/${kernel_only_payload} does not exist."
+	                    echo "Cannot install package. Exiting..."
+	                    exit 1
+	                fi
+	            else
+	                echo "ERROR. ${T186REF_UPDATER} is NOT executable."
+	                echo "Post install script FAILED."
+	                echo "Cannot install package. Exiting..."
+	                exit 1
+	            fi
+	        else
+	            echo "The SMD may be corrupted. Exiting..."
+	            exit 1
+	        fi
+
+	        echo "Reboot the target system for changes to take effect."
+	    else
+	        echo "ERROR. ${T186REF_NVBOOTCTRL} is NOT executable."
+	        echo "Post install script FAILED."
+	        echo "Cannot install package. Exiting..."
+	        exit 1
+	    fi
+	}
+
+	t19x_update_signed_image() {
+	    cp -f boot/Image.t19x boot/Image
+	    cp -f boot/Image.t19x.sig boot/Image.sig
+	}
+
+	# Skip kernel partition flashing since we want the backup partition to
+	# be the generic kernel and we don't actually create BUP for rt-kernel.
+	# shellcheck disable=SC2193
+	if [[ "4.9.299-tegra" == *rt*-tegra ]]; then
+		exit 0
+	fi
+
+	if [ ! -r "${BOOT_CTRL_CONF}" ]; then
+	    echo "ERROR. Cannot open ${BOOT_CTRL_CONF} for reading."
+	    echo "Cannot install package. Exiting..."
+	    exit 1
+	fi
+
+	"${UPDATE_CONF}" -c
+
+	chipid=$( awk '/TEGRA_CHIPID/ {print $2}' "${BOOT_CTRL_CONF}" )
+	payload_dir="${OTA_PACKAGE_DIR}"
+
+	case "${chipid}" in
+	    0x18)
+	        payload_dir+="/t18x"
+	        t186ref_update
+	        ;;
+	    0x19)
+	        payload_dir+="/t19x"
+	        t19x_update_signed_image
+	        t186ref_update
+	        ;;
+	    0x21)
+	        # Don't install kernel_only_payload for t210ref
+	        ;;
+	    *)
+	        echo "ERROR. Unrecognized chip ID: ${chipid}."
+	        echo "Cannot install kernel package. Exiting..."
+	        exit 1
+	esac
+
+	exit 0
+}
+
+post_upgrade() {
+	post_install
+}
+
+post_remove() {
+
+	# Copyright (c) 2020, NVIDIA CORPORATION. All rights reserved.
+	#
+	# Redistribution and use in source and binary forms, with or without
+	# modification, are permitted provided that the following conditions are met:
+	#
+	# 1. Redistributions of source code must retain the above copyright notice, this
+	#    list of conditions and the following disclaimer.
+	#
+	# 2. Redistributions in binary form must reproduce the above copyright notice,
+	#    this list of conditions and the following disclaimer in the documentation
+	#    and/or other materials provided with the distribution.
+	#
+	# 3. Neither the name of the copyright holder nor the names of its
+	#    contributors may be used to endorse or promote products derived from
+	#    this software without specific prior written permission.
+	#
+	# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+	# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+	# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+	# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+	# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+	# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+	# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+	# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+	# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+	# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+	# When the current kernel is real-time variant, change the default boot
+	# image to the generic kernel.
+	# shellcheck disable=SC2193
+	if [[ "4.9.299-tegra" == *rt*-tegra ]]; then
+		nv-update-extlinux "generic"
+	fi
+
+}

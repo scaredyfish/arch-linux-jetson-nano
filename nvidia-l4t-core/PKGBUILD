@@ -14,7 +14,7 @@ replaces=('nvidia-l4t-ccp-t210ref')
 backup=('etc/dpkg/dpkg.cfg.d/include-docs' 'etc/ld.so.conf.d/nvidia-tegra.conf' 'etc/nv_tegra_release')
 options=('!strip' '!emptydirs')
 install=${pkgname}.install
-source=("nvidia-l4t-core_32.7.3-20221122092935_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-core/nvidia-l4t-core_32.7.3-20221122092935_arm64.deb")
 sha512sums=('f90eb203d2efd03f6ac16f6c6c91e318b21fb41405d3490f05b322bb7bbda41b24676d17ef57f06f62944b58e06892366b8ede272be896e95b5f0dff10350166')
 
 package(){
