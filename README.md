@@ -14,8 +14,9 @@ On a host PC (currently only tested on Ubuntu)
 - extract the driver package, then extract the Arch distribution into ``Linux_for_Tegra/rootfs``
 - ``cp kernel/Image/Image* rootfs/boot``
 - ``cp kernel/dtb rootfs/boot``
+- ``cp bootloader/extlinux.conf rootfs/boot/extlinux/extlinux.conf
 - put your nano into recovery mode (either via jumper, or via ``sudo reboot --force forced-recovery`` if you already have ubuntu running)
-- run sudo ``./flash.sh <board> mmcblk0p1`` where <board> is the name of one of jetson-nano*.conf (minus the .conf)
+- run ``./nvflash.sh <board> mmcblk0p1`` where <board> is the name of one of jetson-nano*.conf (minus the .conf), or ``./nvautoflash.sh`` to autodetect the board. 
 
 Once the flashing is done, you should be able to reboot into Arch, at which point just follow the Arch installation guide https://wiki.archlinux.org/title/installation_guide
 
