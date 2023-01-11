@@ -20,6 +20,7 @@ nano 7.1-1
 net-tools 2.10-1
 netctl 1.28-1
 nvidia-l4t-core 32.7.3-1
+nvidia-l4t-firmware 32.7.3-1
 nvidia-l4t-init 32.7.3-1
 nvidia-l4t-kernel 4.9.299.tegra-1
 nvidia-l4t-kernel-dtbs 4.9.299.tegra-1

@@ -12,7 +12,7 @@ groups=('')
 depends=('gcc' 'libglvnd' 'libx11' 'libxext' 'nvidia-l4t-core<32.8' 'nvidia-l4t-core>32.7' 'nvidia-l4t-firmware=32.7.3' 'nvidia-l4t-init=32.7.3' 'nvidia-l4t-libvulkan=32.7.3' 'nvidia-l4t-wayland=32.7.3' 'nvidia-l4t-x11=32.7.3')
 options=('!strip' '!emptydirs')
 install=${pkgname}.install
-source=("nvidia-l4t-3d-core_32.7.3-20221122092935_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-3d-core/nvidia-l4t-3d-core_32.7.3-20221122092935_arm64.deb")
 sha512sums=('c8733a48c4b7b40a8180addfda2af79a129d120da4f01f9e3cf388d343ff3f061e2bb9e1e258e7016149e5176ded4a36d6be04ff54fc54292ba680eaa7f1e4b8')
 
 package(){
@@ -23,3 +23,4 @@ package(){
 	install -D -m644 "${pkgdir}/usr/share/doc/nvidia-l4t-3d-core/copyright" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 
 }
+

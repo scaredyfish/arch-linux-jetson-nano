@@ -11,7 +11,7 @@ license=('nVidia')
 groups=('')
 depends=('libdrm' 'libglvnd' 'libx11' 'libxkbcommon' 'mesa' 'nvidia-l4t-3d-core=32.7.3' 'nvidia-l4t-core<32.8' 'nvidia-l4t-core>32.7' 'nvidia-l4t-multimedia-utils=32.7.3' 'nvidia-l4t-weston=32.7.3' 'wayland')
 options=('!strip' '!emptydirs')
-source=("nvidia-l4t-graphics-demos_32.7.3-20221122092935_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-graphics-demos/nvidia-l4t-graphics-demos_32.7.3-20221122092935_arm64.deb")
 sha512sums=('102498c2be4699201877cc8c8b81854e2025e33948803306c146247a0dce38398aafe8d384fe132ba3a7943934f7326f8bc62ba42d45cd6cabe70406202c2f15')
 
 package(){

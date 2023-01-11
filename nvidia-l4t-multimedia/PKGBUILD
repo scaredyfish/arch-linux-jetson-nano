@@ -11,7 +11,6 @@ license=('nVidia')
 groups=('')
 depends=('alsa-lib' 'cairo' 'expat' 'fontconfig' 'gcc' 'glib2' 'gst-plugins-bad-libs' 'gst-plugins-base-libs' 'gstreamer' 'harfbuzz' 'libdatrie' 'libglvnd' 'libx11' 'libxau' 'libxcb' 'libxdmcp' 'libxext' 'libxrender' 'nvidia-l4t-core<32.8' 'nvidia-l4t-core>32.7' 'nvidia-l4t-cuda=32.7.3' 'pcre' 'pixman' 'zlib')
 options=('!strip' '!emptydirs')
-install=${pkgname}.install
 source=("nvidia-l4t-multimedia_32.7.3-20221122092935_arm64.deb")
 sha512sums=('8f9ca11b6df645c50cd5c1bb04e3afe34e582b415c766ebf2675a0debac852a1080a12ef9cd3e80cb502b4cc3e0d07aa3b31e489a8984d866151f1ce94a833dc')
 

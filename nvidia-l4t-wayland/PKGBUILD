@@ -11,8 +11,7 @@ license=('nVidia')
 groups=('')
 depends=('libffi' 'nvidia-l4t-core<32.8' 'nvidia-l4t-core>32.7' 'wayland')
 options=('!strip' '!emptydirs')
-install=${pkgname}.install
-source=("nvidia-l4t-wayland_32.7.3-20221122092935_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-wayland/nvidia-l4t-wayland_32.7.3-20221122092935_arm64.deb")
 sha512sums=('5a206a75790811963ec8cf1efce54b8f5a49800f10e56de949cca26792bb78481702cc6f629d09d82e3447a16944b1a85ddcb12a206f9172cc6150a1af70159a')
 
 package(){

@@ -11,7 +11,7 @@ license=('nVidia')
 groups=('')
 depends=('dtc' 'nvidia-l4t-core>32.7' 'python')
 options=('!strip' '!emptydirs')
-source=("nvidia-l4t-jetson-io_32.7.3-20221122092935_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-jetson-io/nvidia-l4t-jetson-io_32.7.3-20221122092935_arm64.deb")
 sha512sums=('473e52addccd912f8ea3444fdc5c5480b39594df9c94663615b05800023504122d8a1ad9774dd80b094c107ac98fe594cb103cb4d23d227c4cbf8360ea4c1cde')
 
 package(){

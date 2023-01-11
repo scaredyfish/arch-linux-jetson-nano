@@ -9,11 +9,10 @@ arch=('aarch64')
 url="http://developer.nvidia.com/jetson"
 license=('nVidia')
 groups=('')
-depends=('nvidia-l4t-core<32.8' 'nvidia-l4t-core>32.7' 'nvidia-l4t-firmware=32.7.3' 'nvidia-l4t-init=32.7.3')
+depends=('nvidia-l4t-core<32.8' 'nvidia-l4t-core>32.7' 'nvidia-l4t-firmware=32.7.3' 'nvidia-l4t-init=32.7.3', 'nvidia-l4t-3d-core=37.7.3')
 backup=('etc/X11/xorg.conf' 'etc/X11/xorg.conf.jetson_e')
 options=('!strip' '!emptydirs')
-install=${pkgname}.install
-source=("nvidia-l4t-x11_32.7.3-20221122092935_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-x11/nvidia-l4t-x11_32.7.3-20221122092935_arm64.deb")
 sha512sums=('c7610438562fbb4aee218219e222c0b494991623e9ed2dd26cf189dc57f24e193372744327d7fecb21cac5dd2aca4e6604c8a19d50c2855a9b86e842ef848032')
 
 package(){

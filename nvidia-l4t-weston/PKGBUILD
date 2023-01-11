@@ -13,7 +13,7 @@ depends=('audit' 'cairo' 'libdrm' 'libevdev' 'libffi' 'libglvnd' 'libinput' 'lib
 backup=('etc/xdg/weston/weston.ini')
 options=('!strip' '!emptydirs')
 install=${pkgname}.install
-source=("nvidia-l4t-weston_32.7.3-20221122092935_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-weston/nvidia-l4t-weston_32.7.3-20221122092935_arm64.deb")
 sha512sums=('5f8cba14e3444b2b4228eb252ec7a947052e3d10fa348d5a601fae054ae45ca7d337065f12d3d3d31ea1991ed61573c97f14892a4bbd74b00a99c6fa0f4e49f7')
 
 package(){

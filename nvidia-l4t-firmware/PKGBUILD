@@ -12,8 +12,7 @@ groups=('')
 depends=('gcc' 'nvidia-l4t-core<32.8' 'nvidia-l4t-core>32.7')
 backup=('etc/systemd/nvwifibt-pre.sh' 'etc/systemd/nvwifibt.sh' 'etc/systemd/system/nvwifibt.service')
 options=('!strip' '!emptydirs')
-install=${pkgname}.install
-source=("nvidia-l4t-firmware_32.7.3-20221122092935_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-firmware/nvidia-l4t-firmware_32.7.3-20221122092935_arm64.deb")
 sha512sums=('1d0b46627e1df1bbe6d8473cad70255dada85fdea583fb8a4fd2735b529f27b98badbe0e1d1c295b8cacee12805486ee8b06205c7a65fee74f6b64e1a26beafd')
 
 package(){

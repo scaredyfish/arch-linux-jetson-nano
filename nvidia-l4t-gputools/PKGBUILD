@@ -12,7 +12,7 @@ groups=('')
 depends=('nvidia-l4t-core<32.8' 'python')
 options=('!strip' '!emptydirs')
 install=${pkgname}.install
-source=("nvidia-l4t-gputools_32.7.3-20221122092935_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-gputools/nvidia-l4t-gputools_32.7.3-20221122092935_arm64.deb")
 sha512sums=('d06b8d6e3ac142dc471c484bd98a7ee2503a09b481ee7293dced5b5fd2e501ee4504636dcca41660894f1cddbe1ae3f683ed5a89b5ece7c5c7248f73b7c035a4')
 
 package(){

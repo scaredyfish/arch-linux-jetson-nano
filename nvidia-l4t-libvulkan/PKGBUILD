@@ -12,8 +12,7 @@ groups=('')
 depends=('nvidia-l4t-core<32.8' 'nvidia-l4t-core>32.7')
 replaces=('nvidia-l4t-3d-core<=32.5.1')
 options=('!strip' '!emptydirs')
-install=${pkgname}.install
-source=("nvidia-l4t-libvulkan_32.7.3-20221122092935_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-libvulkan/nvidia-l4t-libvulkan_32.7.3-20221122092935_arm64.deb")
 sha512sums=('9496a0005f4635bb15525e325c447e5b2e8598a94ecc976cc05f4719f426672e27d31706d236a9c0c8f5a46867f67f845b17c2d916e102d26a5fe05035899a4c')
 
 package(){

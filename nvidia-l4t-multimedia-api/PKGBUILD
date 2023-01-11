@@ -12,7 +12,7 @@ groups=('')
 depends=('cuda-cudart-10-2' 'cuda-cudart-dev-10-2' 'libglvnd' 'libx11' 'nvidia-l4t-camera=32.7.3' 'nvidia-l4t-core<32.8' 'nvidia-l4t-core>32.7' 'nvidia-l4t-multimedia-utils=32.7.3' 'nvidia-l4t-multimedia=32.7.3')
 options=('!strip' '!emptydirs')
 install=${pkgname}.install
-source=("nvidia-l4t-jetson-multimedia-api_32.7.3-20221122092935_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-jetson-multimedia-api/nvidia-l4t-jetson-multimedia-api_32.7.3-20221122092935_arm64.deb")
 sha512sums=('ff5d6d10bf09d40702bbe7c2d06ea41cc429f0ed24fd322334343ae6cfeb754a1c686b2a3fc343147461798fc0f8eae8d65a84dca641b0879850c99f3baf0937')
 
 package(){
