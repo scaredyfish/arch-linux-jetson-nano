@@ -9,10 +9,9 @@ arch=('aarch64')
 url="http://developer.nvidia.com/jetson"
 license=('nVidia')
 groups=('')
-depends=('alsa-lib' 'expat' 'gcc' 'glib2' 'gst-plugins-bad-libs' 'gst-plugins-base-libs' 'gstreamer' 'libbsd' 'libglvnd' 'libx11' 'libxcb' 'libxdmcp' 'libxext' 'nvidia-l4t-camera=32.7.3' 'nvidia-l4t-core<32.8' 'nvidia-l4t-core>32.7' 'nvidia-l4t-cuda=32.7.3' 'nvidia-l4t-multimedia-utils=32.7.3' 'nvidia-l4t-multimedia=32.7.3' 'pcre' 'wayland')
+depends=('alsa-lib' 'expat' 'gcc' 'glib2' 'gst-plugins-bad-libs' 'gst-plugins-base-libs' 'gstreamer' 'libbsd' 'libglvnd' 'libx11' 'libxcb' 'libxdmcp' 'libxext' 'nvidia-l4t-camera' 'nvidia-l4t-core' 'nvidia-l4t-cuda' 'nvidia-l4t-multimedia-utils' 'nvidia-l4t-multimedia' 'pcre' 'wayland')
 options=('!strip' '!emptydirs')
-install=${pkgname}.install
-source=("nvidia-l4t-gstreamer_32.7.3-20221122092935_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-gstreamer/nvidia-l4t-gstreamer_32.7.3-20221122092935_arm64.deb")
 sha512sums=('81b97573cd6fbca83fda8fea9633d00ad80d5c2f29b06ef47b4c6dc2a23332adeaf6e3da5daf38174a2dcd87580ed1072d66e582576b92df6ccbd832b156205d')
 
 package(){

@@ -9,10 +9,10 @@ arch=('aarch64')
 url="http://developer.nvidia.com/jetson"
 license=('nVidia')
 groups=('')
-depends=('nvidia-l4t-core<32.8' 'nvidia-l4t-core>32.7' 'nvidia-l4t-xusb-firmware=32.7.3')
+depends=('nvidia-l4t-core' 'nvidia-l4t-xusb-firmware')
 options=('!strip' '!emptydirs')
 install=${pkgname}.install
-source=("nvidia-l4t-initrd_32.7.3-20221122092935_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-initrd/nvidia-l4t-initrd_32.7.3-20221122092935_arm64.deb")
 sha512sums=('4320a57bf3bc67c632921aa4346bbcc7e0a7d348a7f2ec7bc304d7fa5fefa4de057f03bc4e3533c7bb84b1263118e7eb0fc06f19d62e292404a315af3395f648')
 
 package(){
@@ -20,6 +20,6 @@ package(){
 	# Extract package data
 	tar -xI unzstd -f data.tar.zst -C "${pkgdir}"
 
-	install -D -m644 "usr/share/doc/nvidia-l4t-initrd/copyright" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+	install -D -m644 "${pkgdir}/usr/share/doc/nvidia-l4t-initrd/copyright" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 
 }

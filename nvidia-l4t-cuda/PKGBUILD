@@ -9,10 +9,10 @@ arch=('aarch64')
 url="http://developer.nvidia.com/jetson"
 license=('')
 groups=('')
-depends=('nvidia-l4t-3d-core=32.7.3' 'nvidia-l4t-core<32.8' 'nvidia-l4t-core>32.7')
+depends=('nvidia-l4t-3d-core' 'nvidia-l4t-core')
 options=('!strip' '!emptydirs')
 install=${pkgname}.install
-source=("nvidia-l4t-cuda_32.7.3-20221122092935_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-cuda/nvidia-l4t-cuda_32.7.3-20221122092935_arm64.deb")
 sha512sums=('303e9c8befb0fc9c8ac9b8f2a30217f534255c2fe78e3ef9c68d0fc11d66fa8cea5af35c791736d922fc86dcc75426af28dfce2e1404fc791498e4b15ac7d1da')
 
 package(){

@@ -9,10 +9,10 @@ arch=('aarch64')
 url="http://developer.nvidia.com/jetson"
 license=('GPL' 'nVidia')
 groups=('')
-depends=('nvidia-l4t-core<32.8' 'nvidia-l4t-core>32.7' 'nvidia-l4t-init<32.8' 'nvidia-l4t-init>32.7' 'nvidia-l4t-tools=32.7.3')
+depends=('nvidia-l4t-core' 'nvidia-l4t-init' 'nvidia-l4t-tools' 'xxd')
 options=('!strip' '!emptydirs')
 install=${pkgname}.install
-source=("nvidia-l4t-kernel_4.9.299-tegra-32.7.3-20221122092935_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-kernel/nvidia-l4t-kernel_4.9.299-tegra-32.7.3-20221122092935_arm64.deb")
 sha512sums=('eefd94286410351ecb5b2aab77ed74e5bc54c99c00d0c98dc5012114cdb2a2629b92789ca2dbbb45d489f476ced707dd0719e00ea7542afbacbcad3b7cf87746')
 
 package(){

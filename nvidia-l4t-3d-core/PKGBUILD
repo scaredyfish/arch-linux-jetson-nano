@@ -9,7 +9,7 @@ arch=('aarch64')
 url="http://developer.nvidia.com/jetson"
 license=('nVidia')
 groups=('')
-depends=('gcc' 'libglvnd' 'libx11' 'libxext' 'nvidia-l4t-core<32.8' 'nvidia-l4t-core>32.7' 'nvidia-l4t-firmware=32.7.3' 'nvidia-l4t-init=32.7.3' 'nvidia-l4t-libvulkan=32.7.3' 'nvidia-l4t-wayland=32.7.3' 'nvidia-l4t-x11=32.7.3')
+depends=('gcc' 'libglvnd' 'libx11' 'libxext' 'nvidia-l4t-core' 'nvidia-l4t-firmware' 'nvidia-l4t-init' 'nvidia-l4t-libvulkan' 'wayland')
 options=('!strip' '!emptydirs')
 install=${pkgname}.install
 source=("https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-3d-core/nvidia-l4t-3d-core_32.7.3-20221122092935_arm64.deb")

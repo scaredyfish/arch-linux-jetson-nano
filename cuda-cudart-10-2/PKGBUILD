@@ -11,7 +11,7 @@ license=('nVidia')
 groups=('')
 backup=('etc/ld.so.conf.d/cuda-10-2.conf')
 options=('!strip' '!emptydirs')
-source=("cuda-cudart-10-2_10.2.300-1_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/common/pool/main/c/cuda-cudart/cuda-cudart-10-2_10.2.300-1_arm64.deb")
 sha512sums=('e24d527d9ac5e14adf55532168de002e612224e954d25cf23eca00a7c842eafa4b3ee3712346d78a5546f5145c01b261017f4d3eccb02940849fde0f4b379ae4')
 
 package(){

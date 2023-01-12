@@ -9,7 +9,7 @@ arch=('aarch64')
 url=""
 license=('nVidia')
 groups=('')
-depends=('cuda-cupti-dev-10-2>=10.2.300' 'cuda-gdb-10-2>=10.2.300' 'cuda-memcheck-10-2>=10.2.300' 'cuda-nvdisasm-10-2>=10.2.300' 'cuda-nvprof-10-2>=10.2.300' 'cuda-nvtx-10-2>=10.2.300')
+depends=('cuda-cupti-dev-10-2' 'cuda-gdb-10-2' 'cuda-memcheck-10-2' 'cuda-nvdisasm-10-2' 'cuda-nvprof-10-2' 'cuda-nvtx-10-2')
 options=('!strip' '!emptydirs')
 source=("PUT_FULL_URL_FOR_DOWNLOADING_DEB_PACKAGE_HERE")
 sha512sums=('9ba135190cfd6523c2741924218c23709e3722e0cf42008e98dd35bde309d6fa0d4dcce692eec6c1479f4f53c43e9507a49396c32cfa7696b864a26d594f36f4')

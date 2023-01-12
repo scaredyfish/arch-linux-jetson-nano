@@ -9,11 +9,11 @@ arch=('aarch64')
 url=""
 license=('nVidia')
 groups=('')
-depends=('cuda-cudart-10-2>=10.2.300' 'cuda-driver-dev-10-2>=10.2.300')
+depends=('cuda-cudart-10-2' 'cuda-driver-dev-10-2')
 provides=('cuda-misc-headers-10-2')
 replaces=('cuda-misc-headers-10-2<=10.2.89')
 options=('!strip' '!emptydirs')
-source=("cuda-cudart-dev-10-2_10.2.300-1_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/common/pool/main/c/cuda-cudart/cuda-cudart-dev-10-2_10.2.300-1_arm64.deb")
 sha512sums=('71bad40f5d27f2b0e96833240c9edd7f0985bca45f5f674346de1872064cab8cdcb25a84ebf42f444537a63008130ddf4c3332e46d7b51a56f6dcde28562a559')
 
 package(){

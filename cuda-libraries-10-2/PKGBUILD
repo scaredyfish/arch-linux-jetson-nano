@@ -9,9 +9,9 @@ arch=('aarch64')
 url=""
 license=('nVidia')
 groups=('')
-depends=('cuda-cudart-10-2>=10.2.300' 'cuda-nvgraph-10-2>=10.2.300' 'cuda-nvrtc-10-2>=10.2.300' 'libcublas10>=10.2.3.300' 'libcufft-10-2>=10.1.2.300' 'libcurand-10-2>=10.1.2.300' 'libcusolver-10-2>=10.3.0.300' 'libcusparse-10-2>=10.3.1.300' 'libnpp-10-2>=10.2.1.300')
+depends=('cuda-cudart-10-2' 'cuda-nvgraph-10-2' 'cuda-nvrtc-10-2' 'libcublas10' 'libcufft-10-2' 'libcurand-10-2' 'libcusolver-10-2' 'libcusparse-10-2' 'libnpp-10-2')
 options=('!strip' '!emptydirs')
-source=("PUT_FULL_URL_FOR_DOWNLOADING_DEB_PACKAGE_HERE")
+source=("https://repo.download.nvidia.com/jetson/common/pool/main/c/cuda-libraries-10-2/cuda-libraries-10-2_10.2.460-1_arm64.deb")
 sha512sums=('ba0f6f2016b0c01b1cb6b334615e0b01f149c658d6697abc3c317fb92535e597f6aef044cbbd005eb48b8e0f726f30369484d1cd9ca353413068ef0566a1b8f3')
 
 package(){

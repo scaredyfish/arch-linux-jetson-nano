@@ -10,7 +10,7 @@ url=""
 license=('nVidia')
 groups=('')
 options=('!strip' '!emptydirs')
-source=("cuda-driver-dev-10-2_10.2.300-1_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/common/pool/main/c/cuda-cudart/cuda-driver-dev-10-2_10.2.300-1_arm64.deb")
 sha512sums=('3b82b828797ad34d677a9cb7c11e7dd4d65ba15dd747edb1f2fb3584052d55c025c85db5adaad06a9276f4d9cace28bffbe0fcaef13ba46cd4872e49ed28b6d6')
 
 package(){

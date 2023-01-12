@@ -9,11 +9,11 @@ arch=('aarch64')
 url="http://developer.nvidia.com/jetson"
 license=('')
 groups=('')
-depends=('cairo' 'desktop-file-utils' 'expat' 'gcc' 'glib2' 'gtk3' 'hicolor-icon-theme' 'libegl' 'libglvnd' 'libx11' 'nvidia-l4t-core<32.8' 'nvidia-l4t-core>32.7' 'nvidia-l4t-cuda=32.7.3' 'nvidia-l4t-multimedia-utils=32.7.3' 'nvidia-l4t-multimedia=32.7.3')
+depends=('cairo' 'desktop-file-utils' 'expat' 'gcc' 'glib2' 'gtk3' 'hicolor-icon-theme' 'libegl' 'libglvnd' 'libx11' 'nvidia-l4t-core' 'nvidia-l4t-cuda' 'nvidia-l4t-multimedia-utils' 'nvidia-l4t-multimedia')
 backup=('etc/systemd/system/nvargus-daemon.service')
 options=('!strip' '!emptydirs')
 install=${pkgname}.install
-source=("nvidia-l4t-camera_32.7.3-20221122092935_arm64.deb")
+source=("https://repo.download.nvidia.com/jetson/t210/pool/main/n/nvidia-l4t-camera/nvidia-l4t-camera_32.7.3-20221122092935_arm64.deb")
 sha512sums=('edc65e7ccc04b7c39c0fcfafa6d33429fc8065147007cac14a46f5cd1233d027be0729770cf8063c98e7c273b9a64cb9f47839dce66aef90d5dd6d75b153fc08')
 
 package(){
