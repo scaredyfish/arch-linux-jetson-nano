@@ -12,8 +12,6 @@ On a host PC (currently only tested on Ubuntu)
 - Download the generic Arch armv8 distribution from: https://archlinuxarm.org/platforms/armv8/generic
 - Download the Jetson Nano driver package https://developer.nvidia.com/embedded/linux-tegra-r3273
 - extract the driver package, then extract the Arch distribution into ``Linux_for_Tegra/rootfs``
-- ``sudo cp kernel/Image/Image* rootfs/boot``
-- ``sudo cp kernel/dtb rootfs/boot``
 - ``mkdir rootfs/boot/extlinux.conf``
 - ``sudo cp bootloader/extlinux.conf rootfs/boot/extlinux/extlinux.conf``
 - put your nano into recovery mode (either via jumper, or via ``sudo reboot --force forced-recovery`` if you already have ubuntu running)
