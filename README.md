@@ -37,7 +37,7 @@ pacman -Syu
 pacman -S git
 ```
 
-Then clone this repo, and install (```makepkg --syncdeps``` then ```pacman -U```) at least ```nvidia-l4t-core```, ```nvidia-l4t-tools```, ```nvidia-l4t-init```, and ```nvidia-l4t-kernel```.
+Then clone this repo, and install (```makepkg --syncdeps``` then ```pacman -U```) at least ```nvidia-l4t-core```, ```nvidia-l4t-tools```, ```nvidia-l4t-init```, ```nvidia-l4t-firmware``` and ```nvidia-l4t-kernel```.
 
 At this point you should be safe to reboot, and further set up your system however you want.
 
