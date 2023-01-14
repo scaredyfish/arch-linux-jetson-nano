@@ -17,7 +17,27 @@ On a host PC (currently only tested on Ubuntu)
 - put your nano into recovery mode (either via jumper, or via ``sudo reboot --force forced-recovery`` if you already have ubuntu running)
 - run ``./nvflash.sh <board> mmcblk0p1`` where <board> is the name of one of jetson-nano*.conf (minus the .conf), or ``./nvautoflash.sh`` to autodetect the board. 
 
-Once the flashing is done, you should be able to reboot into Arch, at which point just follow the Arch installation guide https://wiki.archlinux.org/title/installation_guide
+Once the flashing is done, you should be able to reboot into Arch. 
 
+Initialize the pacman keyring and populate the Arch Linux ARM package signing keys
 
+```
+pacman-key --init
+pacman-key --populate archlinuxarm
+```
+
+The nvflash tool replaced the linux-aarch64 kernel with the L4T kernel, and if you pacman -Syu at this point, it will overwrite the kernel. 
+
+- Uninstall linux-aarch64 kernel, which will delete the L4T kernel image
+- Re-install the L4T kernel
+
+```
+pacman -R linux-aarch64
+pacman -Syu
+pacman -S git
+```
+
+Then clone this repo, and install (```makepkg --syncdeps``` then ```pacman -U```) at least ```nvidia-l4t-core```, ```nvidia-l4t-tools```, ```nvidia-l4t-init```, and ```nvidia-l4t-kernel```.
+
+At this point you should be safe to reboot, and further set up your system however you want.
 
