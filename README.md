@@ -3,8 +3,6 @@ PKGBUILD files and other bits and pieces to get Arch Linux running on Jetson Nan
 
 This is a work in progress, mostly made for my own notes, I cannot guarantee it won't brick your nano
 
-nvidia doesn't provide a public url for the .deb files, but they can be found in the driver package found here: https://developer.nvidia.com/embedded/linux-tegra-r3273
-
 Rough steps to get arch booting on nano are:
 
 On a host PC (currently only tested on Ubuntu)
