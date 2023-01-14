@@ -16,6 +16,7 @@ On a host PC (currently only tested on Ubuntu)
 - ``sudo cp bootloader/extlinux.conf rootfs/boot/extlinux/extlinux.conf``
 - put your nano into recovery mode (either via jumper, or via ``sudo reboot --force forced-recovery`` if you already have ubuntu running)
 - run ``./nvflash.sh <board> mmcblk0p1`` where <board> is the name of one of jetson-nano*.conf (minus the .conf), or ``./nvautoflash.sh`` to autodetect the board. 
+- For more on flashing, check out the docs at https://docs.nvidia.com/jetson/archives/l4t-archived/l4t-3261/index.html#page/Tegra%20Linux%20Driver%20Package%20Development%20Guide/flashing.html
 
 Once the flashing is done, you should be able to reboot into Arch. 
 
